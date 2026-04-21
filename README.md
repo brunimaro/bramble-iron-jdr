@@ -5,6 +5,8 @@
 Un **Système de Référence (SRD) web interactif et autonome** pour **BRAMBLE & IRON**, un JDR OSR dark fantasy fusionnant la tension exploratoire de *Cairn 2e* et le chaos tactique de *Flail RPG*.  
 Tout est contenu dans un seul fichier HTML : aucune dépendance serveur, aucun build, juste du pur HTML/CSS/JS prêt à jouer.
 
+https://brunimaro.github.io/bramble-iron-jdr/
+
 [![Licence](https://img.shields.io/badge/Licence-CC%20BY--SA%204.0-brightgreen.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![Version](https://img.shields.io/badge/Version-1.0-blue.svg)](https://github.com/ton-utilisateur/bramble-iron-srd)
 [![TTRPG](https://img.shields.io/badge/Genre-OSR%20%7C%20Dark%20Fantasy-orange.svg)]()
