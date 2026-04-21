@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRAMBLE & IRON - SRD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --accent-blood: #8b0000;
+            --accent-gold: #c9a961;
+            --accent-silver: #708090;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-glow: rgba(201, 169, 97, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background animated */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(201, 169, 97, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(112, 128, 144, 0.1) 0%, transparent 50%);
+            animation: bgPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-50%) scaleX(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(-50%) scaleX(1); opacity: 0; }
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-blood) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(201, 169, 97, 0.3);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-family: 'Crimson Text', serif;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-glow);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        nav a:hover::after {
+            width: 80%;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-blood);
+            display: inline-block;
+        }
+
+        h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--accent-silver);
+            margin: 2rem 0 1rem 0;
+        }
+
+        .content-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .content-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(201, 169, 97, 0.1);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blood), var(--accent-gold));
+        }
+
+        .stat-value {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Tables */
+        .random-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .random-table th,
+        .random-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .random-table th {
+            background: rgba(139, 0, 0, 0.3);
+            font-family: 'Cinzel', serif;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .random-table tr:hover {
+            background: rgba(201, 169, 97, 0.05);
+        }
+
+        .roll-button {
+            background: linear-gradient(135deg, var(--accent-blood) 0%, #5a0000 100%);
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            padding: 0.75rem 1.5rem;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 1rem 0;
+        }
+
+        .roll-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(201, 169, 97, 0.4);
+            background: linear-gradient(135deg, #a00000 0%, var(--accent-blood) 100%);
+        }
+
+        .roll-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-left: 4px solid var(--accent-gold);
+            border-radius: 0 4px 4px 0;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        .roll-result.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Dice Roller */
+        .dice-roller {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .dice-display {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--accent-gold);
+            margin: 1rem 0;
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .die {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            background: var(--bg-primary);
+            border: 2px solid var(--accent-blood);
+            border-radius: 8px;
+            animation: roll 0.5s ease-out;
+        }
+
+        @keyframes roll {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(360deg) scale(1.2); }
+            100% { transform: rotate(720deg) scale(1); }
+        }
+
+        .dice-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .dice-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-silver);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .dice-btn:hover {
+            background: var(--accent-blood);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* Classes Grid */
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .class-card {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .class-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(201, 169, 97, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 40px rgba(201, 169, 97, 0.2);
+        }
+
+        .class-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .class-tag {
+            display: inline-block;
+            background: var(--accent-blood);
+            color: var(--accent-gold);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Character Sheet */
+        .char-sheet {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .char-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .char-name-input {
+            background: var(--bg-primary);
+            border: 1px solid var(--accent-silver);
+            color: var(--accent-gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input,
+        .form-group select {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-glow);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px rgba(201, 169, 97, 0.2);
+        }
+
+        /* Utility */
+        .highlight {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .danger {
+            color: var(--accent-blood);
+        }
+
+        .rule-box {
+            background: rgba(139, 0, 0, 0.1);
+            border-left: 4px solid var(--accent-blood);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .tip-box {
+            background: rgba(201, 169, 97, 0.1);
+            border-left: 4px solid var(--accent-gold);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-glow);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-text {
+            font-family: 'Crimson Text', serif;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .content-box,
+            .class-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-blood);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gold);
+        }
+
+        /* Generator Section */
+        .generator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .generator-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .generator-card:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent-gold);
+            transform: translateY(-3px);
+        }
+
+        .generator-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .generator-title {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .generator-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header>
+        <h1>BRAMBLE & IRON</h1>
+        <p class="subtitle">Dans la Forêt de Fer, les sorts mentent, les armes cassent, et seuls les plus têtus survivent</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#creation">Création</a></li>
+            <li><a href="#regles">Règles</a></li>
+            <li><a href="#classes">Classes</a></li>
+            <li><a href="#combat">Combat</a></li>
+            <li><a href="#magie">Magie</a></li>
+            <li><a href="#tables">Tables</a></li>
+            <li><a href="#generateurs">Générateurs</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Accueil -->
+        <section id="accueil">
+            <h2>Bienvenue dans BRAMBLE & IRON</h2>
+            <div class="content-box">
+                <p><strong>BRAMBLE & IRON</strong> est un JDR OSR hybride qui marie la tension exploratoire et la simplicité de <em>Cairn</em> avec le chaos tactique et l'humour déjanté de <em>Flail RPG</em>.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Attributs</div>
+                        <div class="stat-value">3</div>
+                        <div>STR / DEX / WIL</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">PV de départ</div>
+                        <div class="stat-value">4-8</div>
+                        <div>Mortel mais équitable</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Classes</div>
+                        <div class="stat-value">4</div>
+                        <div>Hybrides uniques</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ambiance</div>
+                        <div class="stat-value">OSR</div>
+                        <div>Dark Fantasy Chaotique</div>
+                    </div>
+                </div>
+
+                <div class="rule-box">
+                    <strong>Concept clé :</strong> Vous ne gagnez pas en évitant le chaos — vous gagnez en dansant avec.
+                </div>
+            </div>
+        </section>
+
+        <!-- Création de Personnage -->
+        <section id="creation">
+            <h2>Création de Personnage</h2>
+            
+            <div class="char-sheet">
+                <div class="char-header">
+                    <h3>Fiche de Personnage</h3>
+                    <input type="text" class="char-name-input" placeholder="Nom du personnage">
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Force (STR)</label>
+                        <input type="number" id="str" min="3" max="18" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Dextérité (DEX)</label>
+                        <input type="number" id="dex" min="3" max="18" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Volonté (WIL)</label>
+                        <input type="number" id="wil" min="3" max="18" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Points de Vie</label>
+                        <input type="number" id="pv" min="1" max="20" value="6">
+                    </div>
+                    <div class="form-group">
+                        <label>Armure</label>
+                        <input type="number" id="armor" min="0" max="5" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Nerve</label>
+                        <input type="number" id="nerve" min="0" max="5" value="2">
+                    </div>
+                </div>
+
+                <div class="dice-roller">
+                    <h3>Générateur d'Attributs</h3>
+                    <div class="dice-display" id="statDice"></div>
+                    <div class="dice-controls">
+                        <button class="dice-btn" onclick="rollStats()">3d6 dans l'ordre</button>
+                        <button class="dice-btn" onclick="rollStat('str')">STR</button>
+                        <button class="dice-btn" onclick="rollStat('dex')">DEX</button>
+                        <button class="dice-btn" onclick="rollStat('wil')">WIL</button>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Background</label>
+                        <select id="background">
+                            <option value="">Choisir...</option>
+                            <option value="bucheron">Bûcheron</option>
+                            <option value="contrebandier">Contrebandier</option>
+                            <option value="fouineur">Fouineur</option>
+                            <option value="heretique">Hérétique</option>
+                            <option value="mercenaire">Mercenaire</option>
+                            <option value="ecorcheur">Écorcheur</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Classe</label>
+                        <select id="classe">
+                            <option value="">Choisir...</option>
+                            <option value="bone-singer">Bone-Singer</option>
+                            <option value="iron-forager">Iron Forager</option>
+                            <option value="wild-hexer">Wild Hexer</option>
+                            <option value="oathbound">Oathbound</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="roll-button" onclick="generateRandomChar()">🎲 Générer Aléatoirement</button>
+            </div>
+        </section>
+
+        <!-- Règles -->
+        <section id="regles">
+            <h2>Règles Principales</h2>
+            
+            <div class="content-box">
+                <h3>📊 Attributs & Sauvegardes</h3>
+                <p>Trois attributs déterminent vos capacités : <span class="highlight">STR</span> (Force), <span class="highlight">DEX</span> (Dextérité), <span class="highlight">WIL</span> (Volonté).</p>
+                
+                <div class="rule-box">
+                    <strong>Jets de sauvegarde :</strong> Lancez 1d20. Si le résultat est ≤ à votre attribut, c'est un succès.
+                </div>
+
+                <div class="tip-box">
+                    <strong>Règle Nerve :</strong> Si vous échouez de justesse (résultat = attribut +1), dépensez 1 point de Nerve pour transformer l'échec en succès… mais le MJ ajoute une complication narrative.
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>🎒 Inventaire & Fatigue</h3>
+                <p>10 emplacements d'inventaire. La <span class="danger">Fatigue</span> occupe des cases et bloque la récupération.</p>
+                <ul>
+                    <li>Dépensez 1 Fatigue pour relancer un dé de sauvegarde</li>
+                    <li>Dépensez 1 Fatigue pour activer un effet de classe</li>
+                    <li>La Fatigue se récupère après un repos complet sans danger</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>⏱️ Exploration</h3>
+                <p><strong>1 tour = 10 minutes</strong>. Gérez la lumière, les ressources et les rencontres aléatoires.</p>
+                <div class="rule-box">
+                    Table de réactions 2d6 : 2-3 Hostile | 4-6 Prudent | 7-9 Curieux | 10-12 Négocie | <span class="danger">2 ou 12 = Chaotique</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Classes -->
+        <section id="classes">
+            <h2>Classes Hybrides</h2>
+            
+            <div class="classes-grid">
+                <div class="class-card">
+                    <div class="class-name">Bone-Singer</div>
+                    <span class="class-tag">Nécromancien</span>
+                    <p>Peut invoquer un squelette allié en dépensant 1 Fatigue, mais doit réussir un jet WIL ou subir une conséquence narrative.</p>
+                    <div class="rule-box">
+                        <strong>PV :</strong> d6<br>
+                        <strong>Équipement :</strong> Grimoire d'os, dague en os, vêtements funéraires
+                    </div>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-name">Iron Forager</div>
+                    <span class="class-tag">Artisan</span>
+                    <p>Peut réparer une arme cassée en combat avec un jet DEX, mais l'arme devient <em>Instable</em> (dégâts aléatoires).</p>
+                    <div class="rule-box">
+                        <strong>PV :</strong> d6<br>
+                        <strong>Équipement :</strong> Outils de forgeron, marteau, armure légère
+                    </div>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-name">Wild Hexer</div>
+                    <span class="class-tag">Sorcier Sauvage</span>
+                    <p>Lance un sort mineur sans Fatigue une fois par scène, mais le prochain sort lancé par n'importe qui dans la zone a +1d6 de risque.</p>
+                    <div class="rule-box">
+                        <strong>PV :</strong> d6<br>
+                        <strong>Équipement :</strong> Bâton noueux, grimoire sauvage, herbes
+                    </div>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-name">Oathbound</div>
+                    <span class="class-tag">Guerrier Sacré</span>
+                    <p>Peut annuler un échec critique une fois par session, mais doit immédiatement accomplir un vœu narratif imposé par le MJ.</p>
+                    <div class="rule-box">
+                        <strong>PV :</strong> d6<br>
+                        <strong>Équipement :</strong> Armure moyenne, arme sacrée, symbole de foi
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Combat -->
+        <section id="combat">
+            <h2>Système de Combat</h2>
+            
+            <div class="content-box">
+                <h3>⚔️ Combat Poker-Enhanced</h3>
+                <p>Les attaques touchent toujours, mais le pool de dégâts devient un mini-jeu de dés :</p>
+                
+                <ol>
+                    <li>Lancez le dé d'arme (d6/d8/d10)</li>
+                    <li>Ajoutez 1d6 bonus si vous avez l'avantage tactique</li>
+                    <li><span class="highlight">Chaque "1" sur un d6 bonus</span> = dégâts critiques ou effet spécial</li>
+                    <li><span class="danger">Trois "1" sur l'ensemble du pool</span> = coup décisif (ennemi hors combat sauf WIL save)</li>
+                </ol>
+
+                <div class="dice-roller">
+                    <h3>Simulateur de Combat</h3>
+                    <div class="dice-display" id="combatDice"></div>
+                    <div class="dice-controls">
+                        <button class="dice-btn" onclick="rollWeapon('d6')">d6</button>
+                        <button class="dice-btn" onclick="rollWeapon('d8')">d8</button>
+                        <button class="dice-btn" onclick="rollWeapon('d10')">d10</button>
+                        <button class="dice-btn" onclick="rollCombat()">+1d6 avantage</button>
+                    </div>
+                    <div id="combatResult" class="roll-result"></div>
+                </div>
+
+                <div class="rule-box">
+                    <strong>Armure :</strong> Soustrait des dégâts.<br>
+                    <strong>Usure des armes :</strong> Après un jet de dégâts avec un "6" naturel, l'arme gagne 1 point de Fragilité. À 3 points, elle casse.
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>💀 Dommages Critiques</h3>
+                <p>Si les PV tombent à 0, les dégâts restants entament l'attribut STR. Échec de sauvegarde = mise hors combat ou mort.</p>
+            </div>
+        </section>
+
+        <!-- Magie -->
+        <section id="magie">
+            <h2>Système de Magie</h2>
+            
+            <div class="content-box">
+                <h3>✨ Magie à Double Tranchant</h3>
+                <p>Les sorts sont contenus dans des <strong>Grimoires Instables</strong>. Le lancement utilise le système <em>Push Your Luck</em> :</p>
+
+                <ol>
+                    <li>Déclarez l'effet souhaité</li>
+                    <li>Le MJ détermine le nombre de d6 à lancer (1 à 3)</li>
+                    <li><span class="highlight">Somme élevée</span> = effet puissant</li>
+                    <li><span class="danger">Chaque "6"</span> = conséquence immédiate (Fatigue, dégâts collatéraux, invocation involontaire…)</li>
+                    <li>Si la somme totale dépasse 15 : <strong>succès spectaculaire</strong>, mais le grimoire est consumé</li>
+                </ol>
+
+                <div class="dice-roller">
+                    <h3>Lanceur de Sorts</h3>
+                    <div class="dice-display" id="spellDice"></div>
+                    <div class="dice-controls">
+                        <button class="dice-btn" onclick="rollSpell(1)">1d6 (Mineur)</button>
+                        <button class="dice-btn" onclick="rollSpell(2)">2d6 (Majeur)</button>
+                        <button class="dice-btn" onclick="rollSpell(3)">3d6 (Puissant)</button>
+                    </div>
+                    <div id="spellResult" class="roll-result"></div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Conseil :</strong> Encouragez le Push-Your-Luck. Les conséquences doivent avancer l'histoire, pas juste punir.
+                </div>
+            </div>
+        </section>
+
+        <!-- Tables Aléatoires -->
+        <section id="tables">
+            <h2>Tables de Génération Aléatoire</h2>
+
+            <div class="content-box">
+                <h3>🎲 Backgrounds (1d6)</h3>
+                <table class="random-table">
+                    <thead>
+                        <tr><th>d6</th><th>Background</th><th>Compétence</th><th>Équipement</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Bûcheron</td><td>Force de la forêt (+1 STR)</td><td>Hache, corde, 2 rations</td></tr>
+                        <tr><td>2</td><td>Contrebandier</td><td>Passage discret (+1 DEX)</td><td>Dague, fausses clés, bourse vide</td></tr>
+                        <tr><td>3</td><td>Fouineur</td><td>Oreille du sous-sol</td><td>Piolet, lanterne, 1 ration</td></tr>
+                        <tr><td>4</td><td>Hérétique</td><td>Connaissance interdite</td><td>Grimoire brûlé, couteau rituel</td></tr>
+                        <tr><td>5</td><td>Mercenaire</td><td>Vétéran des guerres</td><td>Épée courte, armure légère</td></tr>
+                        <tr><td>6</td><td>Écorcheur</td><td>Chasseur de primes</td><td>Arbalète, 5 carreaux, menottes</td></tr>
+                    </tbody>
+                </table>
+                <button class="roll-button" onclick="rollTable('background')">🎲 Tirer un Background</button>
+                <div id="backgroundResult" class="roll-result"></div>
+            </div>
+
+            <div class="content-box">
+                <h3>🎲 Objets à Risque (1d10)</h3>
+                <table class="random-table">
+                    <thead>
+                        <tr><th>d10</th><th>Objet</th><th>Risque</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Arc-Casteur crachotant</td><td>1/6 surchauffe → 1d4 feu ami</td></tr>
+                        <tr><td>2</td><td>Épée des Murmures</td><td>Parle aux pires moments (WIL save)</td></tr>
+                        <tr><td>3</td><td>Grimoire d'Étincelles</td><td>Chaque 6 = retour de flamme 1d4</td></tr>
+                        <tr><td>4</td><td>Bouclier Maudit</td><td>+2 Armure mais -1 DEX permanente</td></tr>
+                        <tr><td>5</td><td>Potion de Force</td><td>+2 STR temporaire, puis 1 Fatigue</td></tr>
+                        <tr><td>6</td><td>Clé Universelle</td><td>Ouvre tout… y compris les cages</td></tr>
+                        <tr><td>7</td><td>Miroir des Âmes</td><td>Montre vérités dérangeantes</td></tr>
+                        <tr><td>8</td><td>Bottes de Vitesse</td><td>+1 DEX mais bruit constant</td></tr>
+                        <tr><td>9</td><td>Amulette de Protection</td><td>1 usage, puis se brise violemment</td></tr>
+                        <tr><td>10</td><td>Lanterne Fantôme</td><td>Éclaire les invisibles… et eux vous voient</td></tr>
+                    </tbody>
+                </table>
+                <button class="roll-button" onclick="rollTable('risk')">🎲 Tirer un Objet à Risque</button>
+                <div id="riskResult" class="roll-result"></div>
+            </div>
+
+            <div class="content-box">
+                <h3>🎲 Rencontres Aléatoires (2d6)</h3>
+                <table class="random-table">
+                    <thead>
+                        <tr><th>2d6</th><th>Rencontre</th><th>Réaction</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2</td><td>Rongeurs de Rouille (1d4)</td><td>Hostiles</td></tr>
+                        <tr><td>3</td><td>Spores de Rouille</td><td>WIL save ou 1 Fatigue</td></tr>
+                        <tr><td>4</td><td>Os Chantant isolé</td><td>Curieux, offre indice</td></tr>
+                        <tr><td>5</td><td>Marchand Ombreux</td><td>Négocie (prix x2)</td></tr>
+                        <tr><td>6</td><td>Culte-Prêtre fugitif</td><td>Prudent, demande aide</td></tr>
+                        <tr><td>7</td><td>Source d'Eau Pure</td><td>Récupère 1 PV</td></tr>
+                        <tr><td>8</td><td>Arme Ancienne</td><td>d6 dégâts, Fragilité 1</td></tr>
+                        <tr><td>9</td><td>Grimoire Partiel</td><td>1 sort mineur utilisable</td></tr>
+                        <tr><td>10</td><td>Allié Blessé</td><td>Aide au combat 1 scène</td></tr>
+                        <tr><td>11</td><td>Trésor Caché</td><td>3 objets aléatoires</td></tr>
+                        <tr><td>12</td><td><span class="danger">Événement Chaotique</span></td><td>Roll sur table Chaos</td></tr>
+                    </tbody>
+                </table>
+                <button class="roll-button" onclick="rollTable('encounter')">🎲 Tirer une Rencontre</button>
+                <div id="encounterResult" class="roll-result"></div>
+            </div>
+
+            <div class="content-box">
+                <h3>🎲 Conséquences Magiques (1d6 par 6 lancé)</h3>
+                <table class="random-table">
+                    <thead>
+                        <tr><th>d6</th><th>Conséquence</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>1 Fatigue immédiate</td></tr>
+                        <tr><td>2</td><td>1d4 dégâts au lanceur</td></tr>
+                        <tr><td>3</td><td>Sort inversé (MJ choisit)</td></tr>
+                        <tr><td>4</td><td>Invocation involontaire (1 Rongeur)</td></tr>
+                        <tr><td>5</td><td>Tous dans la zone gagnent 1 Fatigue</td></tr>
+                        <tr><td>6</td><td><span class="danger">Effet Catastrophique</span> (MJ crée)</td></tr>
+                    </tbody>
+                </table>
+                <button class="roll-button" onclick="rollTable('magic')">🎲 Tirer une Conséquence</button>
+                <div id="magicResult" class="roll-result"></div>
+            </div>
+        </section>
+
+        <!-- Générateurs -->
+        <section id="generateurs">
+            <h2>Générateurs Rapides</h2>
+            
+            <div class="generator-grid">
+                <div class="generator-card" onclick="generateName()">
+                    <div class="generator-icon">⚔️</div>
+                    <div class="generator-title">Nom de Personnage</div>
+                    <div class="generator-desc">Génère un nom dark fantasy</div>
+                </div>
+                
+                <div class="generator-card" onclick="generateQuest()">
+                    <div class="generator-icon">📜</div>
+                    <div class="generator-title">Quête Aléatoire</div>
+                    <div class="generator-desc">Une mission pour les PJ</div>
+                </div>
+                
+                <div class="generator-card" onclick="generateTreasure()">
+                    <div class="generator-icon">💎</div>
+                    <div class="generator-title">Trésor</div>
+                    <div class="generator-desc">Butin trouvé</div>
+                </div>
+                
+                <div class="generator-card" onclick="generateTrap()">
+                    <div class="generator-icon">⚠️</div>
+                    <div class="generator-title">Piège</div>
+                    <div class="generator-desc">Danger en donjon</div>
+                </div>
+                
+                <div class="generator-card" onclick="generateNPC()">
+                    <div class="generator-icon">👤</div>
+                    <div class="generator-title">PNJ</div>
+                    <div class="generator-desc">Personnage rencontré</div>
+                </div>
+                
+                <div class="generator-card" onclick="generateLocation()">
+                    <div class="generator-icon">🏰</div>
+                    <div class="generator-title">Lieu</div>
+                    <div class="generator-desc">Endroit à explorer</div>
+                </div>
+            </div>
+
+            <div id="generatorResult" class="content-box" style="display:none; margin-top:2rem;">
+                <h3 id="generatorTitle">Résultat</h3>
+                <p id="generatorContent" style="font-size:1.2rem; font-family:'Crimson Text',serif;"></p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p class="footer-text">"Dans BRAMBLE & IRON, on ne survit pas en évitant le danger.<br>On survit en apprenant à le faire claquer des doigts."</p>
+        <p>Système inspiré de Cairn 2e et Flail RPG<br>
+        © 2026 - SRD Libre de droit</p>
+    </footer>
+
+    <script>
+        // Utility functions
+        function rollDie(sides) {
+            return Math.floor(Math.random() * sides) + 1;
+        }
+
+        function rollDice(count, sides) {
+            let results = [];
+            let total = 0;
+            for (let i = 0; i < count; i++) {
+                let roll = rollDie(sides);
+                results.push(roll);
+                total += roll;
+            }
+            return { results, total };
+        }
+
+        // Stat rolling
+        function rollStats() {
+            const stats = ['str', 'dex', 'wil'];
+            const display = document.getElementById('statDice');
+            display.innerHTML = '';
+            
+            stats.forEach((stat, index) => {
+                setTimeout(() => {
+                    const roll = rollDice(3, 6);
+                    document.getElementById(stat).value = roll.total;
+                    
+                    const die = document.createElement('div');
+                    die.className = 'die';
+                    die.textContent = roll.total;
+                    display.appendChild(die);
+                }, index * 200);
+            });
+        }
+
+        function rollStat(stat) {
+            const roll = rollDice(3, 6);
+            document.getElementById(stat).value = roll.total;
+            
+            const display = document.getElementById('statDice');
+            display.innerHTML = `<div class="die">${roll.total}</div>`;
+        }
+
+        // Combat rolling
+        function rollWeapon(die) {
+            const roll = rollDie(parseInt(die.replace('d', '')));
+            const display = document.getElementById('combatDice');
+            display.innerHTML = `<div class="die">${roll}</div>`;
+            
+            const result = document.getElementById('combatResult');
+            result.innerHTML = `Dégâts de base : <strong>${roll}</strong>`;
+            result.classList.add('show');
+        }
+
+        function rollCombat() {
+            const baseRoll = rollDie(6);
+            const bonusRoll = rollDie(6);
+            const display = document.getElementById('combatDice');
+            display.innerHTML = `<div class="die">${baseRoll}</div><div class="die">${bonusRoll}</div>`;
+            
+            let text = `Base: ${baseRoll}, Avantage: ${bonusRoll}<br>`;
+            if (bonusRoll === 1) text += '<span class="danger">⚠️ Coup critique !</span><br>';
+            text += `Total: ${baseRoll + bonusRoll}`;
+            
+            const result = document.getElementById('combatResult');
+            result.innerHTML = text;
+            result.classList.add('show');
+        }
+
+        // Spell rolling
+        function rollSpell(count) {
+            const roll = rollDice(count, 6);
+            const display = document.getElementById('spellDice');
+            display.innerHTML = roll.results.map(r => `<div class="die">${r}</div>`).join('');
+            
+            let text = `Somme: <strong>${roll.total}</strong><br>`;
+            const sixes = roll.results.filter(r => r === 6).length;
+            
+            if (roll.total >= 15) {
+                text += '<span class="highlight">✨ Succès spectaculaire ! Grimoire consumé.</span><br>';
+            }
+            if (sixes > 0) {
+                text += `<span class="danger">⚠️ ${sixes} conséquence(s) magique(s) !</span>`;
+            }
+            
+            const result = document.getElementById('spellResult');
+            result.innerHTML = text;
+            result.classList.add('show');
+        }
+
+        // Table rolling
+        const tables = {
+            background: [
+                { d6: 1, name: "Bûcheron", skill: "Force de la forêt (+1 STR)", gear: "Hache, corde, 2 rations" },
+                { d6: 2, name: "Contrebandier", skill: "Passage discret (+1 DEX)", gear: "Dague, fausses clés, bourse vide" },
+                { d6: 3, name: "Fouineur", skill: "Oreille du sous-sol", gear: "Piolet, lanterne, 1 ration" },
+                { d6: 4, name: "Hérétique", skill: "Connaissance interdite", gear: "Grimoire brûlé, couteau rituel" },
+                { d6: 5, name: "Mercenaire", skill: "Vétéran des guerres", gear: "Épée courte, armure légère" },
+                { d6: 6, name: "Écorcheur", skill: "Chasseur de primes", gear: "Arbalète, 5 carreaux, menottes" }
+            ],
+            risk: [
+                { d10: 1, name: "Arc-Casteur crachotant", risk: "1/6 surchauffe → 1d4 feu ami" },
+                { d10: 2, name: "Épée des Murmures", risk: "Parle aux pires moments (WIL save)" },
+                { d10: 3, name: "Grimoire d'Étincelles", risk: "Chaque 6 = retour de flamme 1d4" },
+                { d10: 4, name: "Bouclier Maudit", risk: "+2 Armure mais -1 DEX permanente" },
+                { d10: 5, name: "Potion de Force", risk: "+2 STR temporaire, puis 1 Fatigue" },
+                { d10: 6, name: "Clé Universelle", risk: "Ouvre tout… y compris les cages" },
+                { d10: 7, name: "Miroir des Âmes", risk: "Montre vérités dérangeantes" },
+                { d10: 8, name: "Bottes de Vitesse", risk: "+1 DEX mais bruit constant" },
+                { d10: 9, name: "Amulette de Protection", risk: "1 usage, puis se brise violemment" },
+                { d10: 10, name: "Lanterne Fantôme", risk: "Éclaire les invisibles… et eux vous voient" }
+            ],
+            encounter: [
+                { roll: "2", name: "Rongeurs de Rouille (1d4)", reaction: "Hostiles" },
+                { roll: "3", name: "Spores de Rouille", reaction: "WIL save ou 1 Fatigue" },
+                { roll: "4", name: "Os Chantant isolé", reaction: "Curieux, offre indice" },
+                { roll: "5", name: "Marchand Ombreux", reaction: "Négocie (prix x2)" },
+                { roll: "6", name: "Culte-Prêtre fugitif", reaction: "Prudent, demande aide" },
+                { roll: "7", name: "Source d'Eau Pure", reaction: "Récupère 1 PV" },
+                { roll: "8", name: "Arme Ancienne", reaction: "d6 dégâts, Fragilité 1" },
+                { roll: "9", name: "Grimoire Partiel", reaction: "1 sort mineur utilisable" },
+                { roll: "10", name: "Allié Blessé", reaction: "Aide au combat 1 scène" },
+                { roll: "11", name: "Trésor Caché", reaction: "3 objets aléatoires" },
+                { roll: "12", name: "Événement Chaotique", reaction: "Roll sur table Chaos" }
+            ],
+            magic: [
+                { d6: 1, effect: "1 Fatigue immédiate" },
+                { d6: 2, effect: "1d4 dégâts au lanceur" },
+                { d6: 3, effect: "Sort inversé (MJ choisit)" },
+                { d6: 4, effect: "Invocation involontaire (1 Rongeur)" },
+                { d6: 5, effect: "Tous dans la zone gagnent 1 Fatigue" },
+                { d6: 6, effect: "Effet Catastrophique (MJ crée)" }
+            ]
+        };
+
+        function rollTable(tableType) {
+            let table, roll;
+            
+            switch(tableType) {
+                case 'background':
+                    roll = rollDie(6);
+                    table = tables.background.find(t => t.d6 === roll);
+                    document.getElementById('backgroundResult').innerHTML = 
+                        `<strong>${roll} - ${table.name}</strong><br>Compétence: ${table.skill}<br>Équipement: ${table.gear}`;
+                    break;
+                case 'risk':
+                    roll = rollDie(10);
+                    table = tables.risk.find(t => t.d10 === roll);
+                    document.getElementById('riskResult').innerHTML = 
+                        `<strong>${roll} - ${table.name}</strong><br>Risque: ${table.risk}`;
+                    break;
+                case 'encounter':
+                    roll = rollDice(2, 6);
+                    const rollText = roll.total === 2 || roll.total === 12 ? roll.total : `${roll.results[0]}+${roll.results[1]}`;
+                    table = tables.encounter.find(t => t.roll === roll.total.toString()) || tables.encounter[tables.encounter.length-1];
+                    document.getElementById('encounterResult').innerHTML = 
+                        `<strong>${rollText} - ${table.name}</strong><br>Réaction: ${table.reaction}`;
+                    break;
+                case 'magic':
+                    roll = rollDie(6);
+                    table = tables.magic.find(t => t.d6 === roll);
+                    document.getElementById('magicResult').innerHTML = 
+                        `<strong>${roll} - ${table.effect}</strong>`;
+                    break;
+            }
+            
+            document.getElementById(`${tableType}Result`).classList.add('show');
+        }
+
+        // Random generators
+        const names = {
+            first: ["Aldric", "Bram", "Cassandra", "Draven", "Elara", "Fenris", "Gareth", "Helena", "Isolde", "Jarek", "Kael", "Lyra", "Magnus", "Nyx", "Orin", "Pyrrha", "Quinn", "Raven", "Silas", "Thorne", "Ulric", "Vesper", "Wren", "Xander", "Ysabel", "Zane"],
+            last: ["Blackwood", "Ironheart", "Shadowmere", "Thornfield", "Nightshade", "Ravencrest", "Bloodworth", "Stonehand", "Grimwald", "Darkwater", "Ashford", "Briarwood", "Crowley", "Dreadmoor", "Emberfall", "Frostgrave", "Gravewalker", "Holloway", "Ironbark", "Jadeblade"]
+        };
+
+        const quests = [
+            "Récupérer le Calice des Os Chantants volé par des Rongeurs",
+            "Détruire une source de Spores de Rouille corrompant la forêt",
+            "Sauver un culte-prêtre captif avant son sacrifice",
+            "Cartographier les ruines d'un sanctuaire oublié",
+            "Trouver l'origine d'un bourdonnement mystérieux",
+            "Négocier avec une créature ancienne réveillée",
+            "Venger la mort de trois fouilleurs disparus",
+            "Sceller une faille vers le Royaume des Os"
+        ];
+
+        const treasures = [
+            "Grimoire d'Étincelles Mineures (1 utilisation)",
+            "Éclat d'Os Chantant (+1 magie, -1 Fatigue immédiate)",
+            "3 potions de soin (1d4+1 PV chacune)",
+            "Armure de plaques ancienne (Armure 3, Fragile)",
+            "Bourse contenant 50 pièces d'or corrompues",
+            "Carte menant à un trésor caché",
+            "Amulette de protection (1 usage)",
+            "Épée enchantée (+1 dégâts, parle aux pires moments)"
+        ];
+
+        const traps = [
+            "Fosse camouflée avec piques rouillés (DEX save ou 1d6 dégâts)",
+            "Fléchettes empoisonnées (DEX save ou 1 Fatigue)",
+            "Plafond qui s'effondre (DEX save ou 2d6 dégâts)",
+            "Gaz toxique (WIL save ou 1d4 dégâts + 1 Fatigue)",
+            "Piège à ours (DEX save ou jambe bloquée)",
+            "Rune explosive (DEX save ou 2d6 feu)",
+            "Glissade sur huile (DEX save ou chute + bruit)",
+            "Porte piégée (DEX save ou d6 dégâts)"
+        ];
+
+        const npcs = {
+            roles: ["Marchand", "Ermite", "Soldat déserteur", "Chasseur", "Pèlerin", "Alchimiste", "Voleur", "Prêtre déchu", "Forgeron", "Guide"],
+            traits: ["Méfiant", "Bavard", "Blessé", "Pressé", "Secret", "Généreux", "Arrogant", "Peureux", "Sage", "Fou"],
+            secrets: ["Cache un objet volé", "Est recherché", "Connaît un passage secret", "Est maudit", "Cherche un trésor", "Protège un secret ancien"]
+        };
+
+        const locations = [
+            "Chapelle oubliée aux murs d'os",
+            "Grotte cristalline luminescente",
+            "Tour en ruine surplombant un marais",
+            "Cimetière antique avec statues brisées",
+            "Forge abandonnée encore chaude",
+            "Arbre géant creux habitable",
+            "Pont effondré sur un ravin",
+            "Sanctuaire souterrain inondé",
+            "Campement de brigands",
+            "Clairière aux champignons géants"
+        ];
+
+        function generateName() {
+            const first = names.first[Math.floor(Math.random() * names.first.length)];
+            const last = names.last[Math.floor(Math.random() * names.last.length)];
+            showGeneratorResult("Nom de Personnage", `${first} "${getNickname()}" ${last}`);
+        }
+
+        function getNickname() {
+            const nicks = ["Rust-Tongue", "Bone-Whisper", "Iron-Fist", "Shadow-Walker", "Blood-Eye", "Grave-Digger", "Storm-Caller", "Night-Crow"];
+            return nicks[Math.floor(Math.random() * nicks.length)];
+        }
+
+        function generateQuest() {
+            const quest = quests[Math.floor(Math.random() * quests.length)];
+            const reward = ["100 po", "Grimoire rare", "Objet magique", "Faveur royale", "Terres", "Réputation"][Math.floor(Math.random() * 6)];
+            showGeneratorResult("Quête Aléatoire", `<strong>Mission :</strong> ${quest}<br><strong>Récompense :</strong> ${reward}`);
+        }
+
+        function generateTreasure() {
+            const count = rollDie(3);
+            let result = [];
+            for (let i = 0; i < count; i++) {
+                result.push(treasures[Math.floor(Math.random() * treasures.length)]);
+            }
+            showGeneratorResult("Trésor Trouvé", result.join("<br>"));
+        }
+
+        function generateTrap() {
+            const trap = traps[Math.floor(Math.random() * traps.length)];
+            const difficulty = ["Facile (DEX 12+)", "Moyen (DEX 14+)", "Difficile (DEX 16+)", "Mortel (DEX 18+)"][rollDie(4)-1];
+            showGeneratorResult("Piège", `<strong>${trap}</strong><br>Difficulté: ${difficulty}`);
+        }
+
+        function generateNPC() {
+            const role = npcs.roles[Math.floor(Math.random() * npcs.roles.length)];
+            const trait = npcs.traits[Math.floor(Math.random() * npcs.traits.length)];
+            const secret = npcs.secrets[Math.floor(Math.random() * npcs.secrets.length)];
+            const name = names.first[Math.floor(Math.random() * names.first.length)];
+            showGeneratorResult("PNJ Rencontré", `<strong>${name}</strong> - ${role}<br>Trait: ${trait}<br>Secret: ${secret}`);
+        }
+
+        function generateLocation() {
+            const loc = locations[Math.floor(Math.random() * locations.length)];
+            const danger = ["Aucun", "Faible", "Moyen", "Élevé", "Mortel"][rollDie(5)-1];
+            const inhabitants = ["Vide", "1d4 créatures", "1 créature unique", "2d6 créatures", "Boss + sbires"][rollDie(5)-1];
+            showGeneratorResult("Lieu à Explorer", `<strong>${loc}</strong><br>Danger: ${danger}<br>Habitants: ${inhabitants}`);
+        }
+
+        function showGeneratorResult(title, content) {
+            document.getElementById('generatorTitle').textContent = title;
+            document.getElementById('generatorContent').innerHTML = content;
+            document.getElementById('generatorResult').style.display = 'block';
+            document.getElementById('generatorResult').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateRandomChar() {
+            rollStats();
+            document.getElementById('background').selectedIndex = rollDie(6);
+            document.getElementById('classe').selectedIndex = rollDie(4);
+            
+            const pv = rollDie(6) + rollDie(4);
+            document.getElementById('pv').value = Math.min(pv, 8);
+            
+            const armor = rollDie(3) - 1;
+            document.getElementById('armor').value = Math.max(armor, 0);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
